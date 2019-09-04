@@ -82,7 +82,7 @@ namespace URLChecker
                  {
                      logger.Error(e, $"{e.Message}|{webUrl}");
                  }
-             }).ConfigureAwait(false);
+             }).ConfigureAwait(false);                              //вот это добавлял
         }
     }
 }

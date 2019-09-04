@@ -57,7 +57,7 @@ namespace URLChecker
         }
 
 
-        //сохранение настроек, чтобы продолжать с места в котором закончили
+        //считывание настроек, чтобы продолжать с места в котором закончили
         private void f_load_settings(string FileName, out string base_Hash, out int i_0, out int i_1, out int i_3, out int i_5, out int i_7, out int i_9)
         {
             using (StreamReader fs = new StreamReader(FileName))
