@@ -63,6 +63,9 @@
     <Compile Include="Hash.cs" />
     <Compile Include="HttpBruteForce.cs" />
     <Compile Include="HttpRequest.cs" />
+    <Compile Include="LocalBruteForce.cs" />
+    <Compile Include="LocalHash.cs" />
+    <Compile Include="LocalRequest.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

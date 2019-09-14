@@ -5,20 +5,20 @@ namespace URLChecker
 {
     public class Logger
     {
-        public static void Configure()
+        public static void Configure(string ErrorFilename, string OkFilename)
         {
             var config = new NLog.Config.LoggingConfiguration();
 
             // Targets where to log to: File and Console
             var logfile = new FileTarget("logfile")
             {
-                FileName = "file.txt",
+                FileName = OkFilename,
                 Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}"
             };
 
             var logError = new FileTarget("logfile")
             {
-                FileName = "Error.txt",
+                FileName = ErrorFilename,
                 Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}"
             };
             //var logconsole = new NLog.Targets.ConsoleTarget("logconsole");

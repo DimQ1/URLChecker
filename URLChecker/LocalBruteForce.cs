@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace URLChecker
 {
-    public class HttpBruteForce
+    public class LocalBruteForce
     {
         private readonly int _parralelCount;
         private Stack<string> _urls;
 
-        public HttpBruteForce(int parralelCount = 10)
+        public LocalBruteForce(int parralelCount = 10)
         {
             _parralelCount = parralelCount;
-            
-            ServicePointManager.DefaultConnectionLimit = parralelCount;
+
+            //ServicePointManager.DefaultConnectionLimit = parralelCount;
         }
 
-        public async Task StartBruteForce(Stack<string> urls)
+        public async Task StartBruteForce(Stack<string> urls, string[] arStr)
         {
             _urls = urls;
             List<Task> tasks = new List<Task>();
 
             while (_urls.Count > 0)
             {
-                tasks.Add(LowLevelHttpRequest.BrutForceAsync(_urls.Pop()));
-                //Console.WriteLine(_urls.Count());             //непонятно зачем
+                tasks.Add(LocalRequest.BrutForceAsync(_urls.Pop(), arStr));
+                //Console.WriteLine(_urls.Count());
 
                 if (tasks.Count > _parralelCount)
                 {
@@ -40,12 +38,9 @@ namespace URLChecker
             if (tasks.Count > 0)
             {
                 tasks = CleanFinishTasks(tasks);
-                /*Task ok_optimization = */await Task.WhenAll(tasks.ToArray());
-
-                //return true;       //!!!!! пробуем возврат значений
+                await Task.WhenAll(tasks.ToArray());
             }
 
-            //return false;       //!!!!! пробуем возврат значений
         }
 
         private List<Task> CleanFinishTasks(List<Task> tasks)
