@@ -19,11 +19,27 @@ namespace URLChecker
             InitializeComponent();
             //для NLog
             Logger.Configure();
+
+            LowLevelHttpRequest.SuccessUrl += Show_Message;
+            HashChecker.Status += HashChecker_Status;
+        }
+
+        private void HashChecker_Status(string message)
+        {
+            var infoText = $"{message}\r\n{Info.Text}";
+            Info.Text = infoText;
         }
 
         private async void Button1_Click(object sender, EventArgs e)
         {
-            await Hash.CheckUrlWithHash(textBox1.Text);
+            await HashChecker.CheckUrlsWithHash(textBox1.Text);
+        }
+
+        private void Show_Message(string message)
+        {
+
+            var text = $"{message}\r\n{ShowSuccesUrls.Text}";
+            ShowSuccesUrls.Text = text;
         }
 
     }
