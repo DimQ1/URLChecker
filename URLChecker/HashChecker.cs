@@ -55,7 +55,7 @@ namespace URLChecker
         static string[] a_s9 = { "a", "b", "c", "d", "e", "f",
                               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 
-        private static Hash GetStartHash(string base_Hash)
+        public static Hash GetStartHash(string base_Hash)
         {
             //если файл настроек не существует
             if (File.Exists(_settingPath))
@@ -116,7 +116,7 @@ namespace URLChecker
                           string a_s6 = base_Hash.BaseHash.Substring(6, 1);
                           string a_s8 = base_Hash.BaseHash.Substring(8, 1);
 
-                          string s_mut = "";
+                          StringBuilder s_mut = new StringBuilder();
                           for (int i0 = i0_start; i0 < a_s0.Length; i0++)
                           {
                               for (int i1 = i1_start; i1 < a_s1.Length; i1++)
@@ -129,10 +129,18 @@ namespace URLChecker
                                           {
                                               for (int i9 = i9_start; i9 < a_s9.Length; i9++)
                                               {
-                                                  s_mut = a_s0[i0] + a_s1[i1] + a_s2/*константа*/ + a_s3[i3] + a_s4/*константа*/ + a_s5[i5] + a_s6/*константа*/ + a_s7[i7] + a_s8/*константа*/ + a_s9[i9];
+                                                  s_mut.Clear();
+                                                  s_mut.Append(a_s0[i0]);
+                                                  s_mut.Append(a_s2);
+                                                  s_mut.Append(a_s3[i3]);
+                                                  s_mut.Append(a_s4);
+                                                  s_mut.Append(a_s5[i5]);
+                                                  s_mut.Append(a_s6);
+                                                  s_mut.Append(a_s7[i7]);
+                                                  s_mut.Append(a_s8);
+                                                  s_mut.Append(a_s9[i9]);
 
-                                                  sw.WriteLine(s_mut);
-                                                  sw.Flush();
+                                                  sw.WriteLine(s_mut.ToString());
 
                                                   if (urls.Count == 0)
                                                   {
@@ -140,7 +148,7 @@ namespace URLChecker
                                                   }            //это проверочный существующий url
                                                   else
                                                   {
-                                                      calculatedHash = s_mut;
+                                                      calculatedHash = s_mut.ToString();
                                                   }
 
                                                   if (urls.Count < MaxCount)
@@ -154,13 +162,6 @@ namespace URLChecker
                                                       Setting.f_save_settings(_settingPath, base_Hash);
                                                       return urls;
                                                   }
-
-                                                  //s_html = getHtmlPageUsingWC("", s_Url);       //пока отключили ПО ПРОИЗВОДИТЕЛЬНОСТИ превосходит многопоточность
-                                                  //if (s_html == "null") { f_save_log("log_WebRequest.log", s_Url + " -- " + "null"); }       //пока отключили
-                                                  //else { f_save_log("log_WebRequest.log", s_Url + " -- " + "Ok"); }
-
-                                                  //myThread t = new myThread("Thread" + i7.ToString() + i9.ToString(), s_Url);   //хлам
-
                                               }
                                               i9_start = 0;
                                           }
