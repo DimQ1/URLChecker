@@ -10,6 +10,13 @@ namespace URLChecker
 {
     public class LowLevelHttpRequest
     {
+
+        public delegate void HttpStateHandler(string message);
+        // Событие, возникающее при выводе денег
+        public static event HttpStateHandler SuccessUrl;
+
+
+
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static async Task/*<bool>*/ BrutForceAsync(string webUrl)
@@ -25,11 +32,17 @@ namespace URLChecker
 
                     logger.Info($"ok| {webresponse.StatusCode:D}|{webUrl}");
 
-                    webresponse.Close();
+                    SuccessUrl?.Invoke(webUrl);
+
+                    //webresponse.Close();
+                    webresponse.Dispose();
+
                 }
                 catch (Exception e)
                 {
+                    webRequest = null;
                     logger.Error(e, $"{e.Message}|{webUrl}");
+                    
                 }
             });
         }

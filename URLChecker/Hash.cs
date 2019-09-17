@@ -7,14 +7,29 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using URLChecker;
 
+using NLog;
+using System.ComponentModel;
+using System.Data;
+
+
+
 namespace URLChecker
 {
     public class Hash
     {
+        //корректировка индекса для переходов через пороговые значения (пока нужно только для первого символа)
+        static public int orderIndexCicleArr(int index, string[] arr)
+        {
+            if (index >= arr.Length) { return index - arr.Length; }
+            if (index < 0)  { return arr.Length - Math.Abs(index); }
+            return index;
+        }
+        
+        
         //блок массивов
         //1-й столбец формируется по алфавиту с маленьких, потом цифры, после снова алфавит большие буквы
         static string[] a_s0 = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-                              "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+                              "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                               "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
         //2-й столбец зависимоть не найдена, повторяются цифры и буквы (нижний регистр a-f    !!!!!)
@@ -49,14 +64,32 @@ namespace URLChecker
         static string[] a_s9 = { "a", "b", "c", "d", "e", "f",
                               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 
+
+
+        //это все для события
+        public static bool checkTrueHash = false;
+        static private void Show_Message(string message)
+        {
+            var text = $"{message}";
+            checkTrueHash = true;
+        }
+
+
         public static async Task CheckUrlWithHash(string base_Hash, Int32 delta_Hash)
         {
             await Task.Run(async () =>
             {
+                //сообщение найденом совпадении
+                LowLevelHttpRequest.SuccessUrl += Show_Message;
+
+
+
+
+
                 HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
                 var urls = new Stack<string>();     //стэк для хранения урлов
 
-                
+
                 if (!string.IsNullOrEmpty(base_Hash) || (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/settings.txt")))             //либо данные в полях либо в файле настроек
                 {
 
@@ -122,11 +155,11 @@ namespace URLChecker
                                                 string a_si0 = "";
                                                 if (i0 < i0_end - i0_delta)
                                                 {
-                                                    a_si0 = a_s0[i0 + i0_delta +1];
+                                                    a_si0 = a_s0[orderIndexCicleArr((i0 + i0_delta +1), a_s0)];
                                                 }
                                                 if (i0 > i0_end - i0_delta)
                                                 {
-                                                    a_si0 = a_s0[(i0_end - i0_delta) - (i0 - (i0_end - i0_delta))];
+                                                    a_si0 = a_s0[orderIndexCicleArr(((i0_end - i0_delta) - (i0 - (i0_end - i0_delta))), a_s0)];
                                                 }
                                                 if (i0 == i0_end - i0_delta) { break; }
 
@@ -138,23 +171,21 @@ namespace URLChecker
                                                 
                                                 if (urls.Count < 1000)
                                                 {
-                                                    if (urls.Count == 0) { urls.Push("https://anonfile.com/" + base_Hash); }                    //это проверочный существующий url
+                                                    //if (urls.Count == 0) { urls.Push("https://anonfile.com/" + base_Hash); }                    //это проверочный существующий url
                                                     urls.Push("https://anonfile.com/" + s_mut);
                                                 }
                                                 else
                                                 {
-                                                    /*bool ok_optimization = */
-
                                                     await httpBruteForce.StartBruteForce(urls);
 
+                                                    //сохраняем в файл настроек прогресс
+                                                    Setting.f_save_settings(System.IO.Directory.GetCurrentDirectory() + "/settings.txt", base_Hash, i0, i0_end, i0_delta, i1, i2, i3, i5, i7, i9);
+
                                                     //проба оптимизации, необходимо выйти к верхнему уровню цикла 
-                                                    //if (true) { i9 = a_s9.Length; ...........}
+                                                    if (checkTrueHash) { i9 = a_s9.Length; i7 = a_s7.Length; i5 = a_s5.Length; i3 = a_s3.Length; i1 = a_s1.Length; checkTrueHash = false; /*continue;*/ }  //continue чтобы пропустить сохранение настроек
 
                                                 }
-
-
-                                                //сохраняем в файл настроек прогресс
-                                                Setting.f_save_settings(System.IO.Directory.GetCurrentDirectory() + "/settings.txt", base_Hash, i0, i0_end, i0_delta, i1, i2, i3, i5, i7, i9);
+                                                
                                             }
                                             i9_start = 0;
                                         }

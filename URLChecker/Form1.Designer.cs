@@ -34,7 +34,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,12 +41,15 @@
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.ShowSuccesUrls = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -111,10 +113,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Нужно обкатать алгоритм генерации локально";
             // 
-            // openFileDialog2
-            // 
-            this.openFileDialog2.FileName = "openFileDialog2";
-            // 
             // richTextBox3
             // 
             this.richTextBox3.Location = new System.Drawing.Point(454, 42);
@@ -174,8 +172,14 @@
             this.textBox3.Size = new System.Drawing.Size(457, 20);
             this.textBox3.TabIndex = 16;
             // 
+            // openFileDialog2
+            // 
+            this.openFileDialog2.FileName = "openFileDialog2";
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button5);
+            this.groupBox3.Controls.Add(this.ShowSuccesUrls);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.textBox5);
             this.groupBox3.Controls.Add(this.label1);
@@ -187,6 +191,40 @@
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Основная часть (перебор по сети)";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(569, 139);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(176, 23);
+            this.button5.TabIndex = 11;
+            this.button5.Text = "New_Check_Object";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
+            // 
+            // ShowSuccesUrls
+            // 
+            this.ShowSuccesUrls.Location = new System.Drawing.Point(316, 56);
+            this.ShowSuccesUrls.Name = "ShowSuccesUrls";
+            this.ShowSuccesUrls.Size = new System.Drawing.Size(437, 20);
+            this.ShowSuccesUrls.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 40);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(203, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Ширина диапазона хэшей для подбора";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(16, 56);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(203, 20);
+            this.textBox5.TabIndex = 6;
+            this.textBox5.Text = "7";
             // 
             // label1
             // 
@@ -217,28 +255,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click_1);
             // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(16, 56);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(203, 20);
-            this.textBox5.TabIndex = 6;
-            this.textBox5.Text = "7";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 40);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(203, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Ширина диапазона хэшей для подбора";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1439, 550);
+            this.ClientSize = new System.Drawing.Size(776, 251);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -275,6 +296,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox ShowSuccesUrls;
+        private System.Windows.Forms.Button button5;
     }
 }
 
