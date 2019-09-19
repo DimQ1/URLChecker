@@ -9,17 +9,19 @@ namespace URLChecker
 {
     class GenerateMutationHash
     {
-        //static public int i0_start;
-        static public int i1_start;
-        static public int i3_start;
-        static public int i5_start;
-        static public int i7_start;
-        static public int i9_start;
+        private static string _filePath_settings;
 
-        static public string base_Hash;
-        static public int i0_start;
-        static public int i0_delta;
-        static public int i0_end;
+        //static public int i0_start;
+        public static int i1_start;
+        public static int i3_start;
+        public static int i5_start;
+        public static int i7_start;
+        public static int i9_start;
+
+        public static string base_Hash;
+        public static int i0_start;
+        public static int i0_delta;
+        public static int i0_end;
 
 
         //блок массивов
@@ -62,12 +64,33 @@ namespace URLChecker
                               "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 
 
-        public GenerateMutationHash(string base_Hash_, int i0_delta_)
+        public GenerateMutationHash(string filePath_settings, string startHash, int? widthOfRangeBruteforce)
+        {
+            _filePath_settings = filePath_settings;
+
+
+            if (startHash?.Length == 10 && widthOfRangeBruteforce != null)
+            {
+                initByInputHash(startHash, widthOfRangeBruteforce.GetValueOrDefault(0));
+            }
+            else
+            {
+                initByLoadSettingsFromFile(filePath_settings);
+            }
+            
+        }
+
+
+        private static void initByInputHash(string base_Hash_, int i0_delta_)
         {
             base_Hash = base_Hash_;
 
             int i0_start_ = 0;
-            for (Int32 i = 0; i < a_s0.Length; i++) { if (a_s0[i] == base_Hash_.Substring(0, 1)) { i0_start_ = i; continue; } }
+
+            // i0_start_ = Array.IndexOf(a_s0, base_Hash_.Substring(0, 1));
+            // я так понимаю ты просто незнал что такая реализация уже есть
+            i0_start_ = CustomIndexOff(base_Hash_, i0_start_);
+
             i0_start = i0_start_ - i0_delta_;
             i0_end = i0_start_ + i0_delta_;
             i0_delta = i0_delta_;
@@ -77,9 +100,26 @@ namespace URLChecker
             i5_start = 0;
             i7_start = 0;
             i9_start = 0;
+
+            SaveProgress();
         }
 
-        public GenerateMutationHash(string filePath_settings)
+        private static int CustomIndexOff(string base_Hash_, int i0_start_)
+        {
+            for (int i = 0; i < a_s0.Length; i++)
+            {
+                if (a_s0[i] == base_Hash_.Substring(0, 1))
+                {
+                    i0_start_ = i;
+                    continue; // тут возможно break ??????
+                }
+            }
+
+            return i0_start_;
+        }
+
+      
+        private static void initByLoadSettingsFromFile(string filePath_settings)
         {
             using (StreamReader fs = new StreamReader(filePath_settings))
             {
@@ -98,9 +138,9 @@ namespace URLChecker
             }
         }
 
-        public void SaveProgress(string filePath_settings)
+        private static void SaveProgress()
         {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath_settings, false))
+            using (StreamWriter file = new StreamWriter(_filePath_settings, false))
             {
                 file.WriteLine(base_Hash);
 
@@ -118,7 +158,7 @@ namespace URLChecker
 
 
         //корректировка индекса для переходов через пороговые значения (пока нужно только для первого символа)
-        static public int orderIndexCicleArr(int index, string[] arr)
+        public static int orderIndexCicleArr(int index, string[] arr)
         {
             if (index >= arr.Length) { return index - arr.Length; }
             if (index < 0) { return arr.Length - Math.Abs(index); }
@@ -137,7 +177,7 @@ namespace URLChecker
 
             i0_start++;
         }
-        
+
 
         public Stack<string> Next1000Hashs()
         {
@@ -178,7 +218,7 @@ namespace URLChecker
 
                                     s_mut = a_si0 + a_s1[i1] + a_s2/*константа*/ + a_s3[i3] + a_s4/*константа*/ + a_s5[i5] + a_s6/*константа*/ + a_s7[i7] + a_s8/*константа*/ + a_s9[i9];
 
-                                    
+
                                     if (urls.Count < 1000)
                                     {
                                         //if (urls.Count == 0) { urls.Push("https://anonfile.com/" + base_Hash); }                    //это проверочный существующий url
@@ -186,7 +226,8 @@ namespace URLChecker
                                     }
                                     else
                                     {
-                                        i0_start = i0; i1_start = i1; i3_start = i3; i5_start = i5; i7_start = i7; i9_start = i9;                     //сохранение переменных цикла
+                                        i0_start = i0; i1_start = i1; i3_start = i3; i5_start = i5; i7_start = i7; i9_start = i9; //сохранение переменных цикла
+                                        SaveProgress();
                                         return urls;
                                     }
                                     i9++;
@@ -207,7 +248,7 @@ namespace URLChecker
                 i0++;
             }
             //i0_start = 0;             //думаем что не нужно, уже завершение
-
+            SaveProgress();
             return urls;        //возвращаем стэе даже если не набралось 1000
         }
     }

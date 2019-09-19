@@ -83,7 +83,7 @@ namespace URLChecker
                 LowLevelHttpRequest.SuccessUrl += Show_Message;
 
 
-
+                System.Threading.CancellationToken cancellationToken = new System.Threading.CancellationToken();
 
 
                 HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
@@ -176,7 +176,7 @@ namespace URLChecker
                                                 }
                                                 else
                                                 {
-                                                    await httpBruteForce.StartBruteForce(urls);
+                                                    await httpBruteForce.StartBruteForce(urls, cancellationToken);
 
                                                     //сохраняем в файл настроек прогресс
                                                     Setting.f_save_settings(System.IO.Directory.GetCurrentDirectory() + "/settings.txt", base_Hash, i0, i0_end, i0_delta, i1, i2, i3, i5, i7, i9);

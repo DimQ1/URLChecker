@@ -7,14 +7,19 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
+
 
 namespace URLChecker
 {
     public partial class Form1 : Form
     {
+
+        private static CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+
         public Form1()
         {
             InitializeComponent();
@@ -86,7 +91,7 @@ namespace URLChecker
                 textBox3.Text = openFileDialog2.FileName;
 
                 arStr = File.ReadAllLines(openFileDialog2.FileName);
-                for (int i=0; i<arStr.Length; i++)       {  if (arStr[i] != "" && arStr[i].Length >= 10) arStr[i] = arStr[i].Substring(0, 10);    }
+                for (int i = 0; i < arStr.Length; i++) { if (arStr[i] != "" && arStr[i].Length >= 10) arStr[i] = arStr[i].Substring(0, 10); }
 
                 foreach (string s in arStr)
                 {
@@ -106,50 +111,56 @@ namespace URLChecker
 
         private async void StartCheckAllHashes(object sender, EventArgs e)
         {
-            await Hash.CheckUrlWithHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
+            ((Button)sender).Enabled = false;
+            await Hash.CheckUrlWithHash(StartHash.Text, Convert.ToInt32(WidthOfRangeBruteforce.Text));
+            ((Button)sender).Enabled = true;
         }
 
 
         //кнопка для альтернативного алгоритма с объектом
         private async void SmartCheckAllHashes(object sender, EventArgs e)
         {
+            ((Button)sender).Enabled = false;
+
             string filePath_settings = Directory.GetCurrentDirectory() + "/settings.txt";
-            GenerateMutationHash mutHash;
+            string startHash = StartHash.Text;
+            string widthOfRangeBruteforce = WidthOfRangeBruteforce.Text;
+            var mutHash = new GenerateMutationHash(filePath_settings, startHash, Convert.ToInt32(widthOfRangeBruteforce));
 
-            if ((textBox1.Text != "") && (textBox1.Text.Length == 10) && (textBox5.Text != ""))
-            {
-                mutHash = new GenerateMutationHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
-            }
-            else
-            {
-               mutHash = new GenerateMutationHash(filePath_settings);
-            }
-
-            mutHash.SaveProgress(filePath_settings);
             HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
 
-            Stack<string> stack;
-            while ((stack = mutHash.Next1000Hashs()).Count > 0)
+            Stack<string> stack = mutHash.Next1000Hashs();
+
+            while (stack.Count > 0)
             {
-                await httpBruteForce.StartBruteForce(stack);
+                await httpBruteForce.StartBruteForce(stack, CancellationTokenSource.Token);
+
+                if (((Button)sender).Enabled)
+                {
+                    break;
+                }
 
                 if (checkTrueHash) { mutHash.optimizeBruteHash(); checkTrueHash = false; }      //оптимизация
-
-                mutHash.SaveProgress(filePath_settings);
+                CancellationTokenSource = new CancellationTokenSource();
+                stack = mutHash.Next1000Hashs();
             }
+
+            ((Button)sender).Enabled = true;
         }
-
-
 
         //это все для события
         public static bool checkTrueHash = false;
-        static private void Show_Message(string message)
+        private void Show_Message(string message)
         {
             var text = $"{message}";
             checkTrueHash = true;
+            CancellationTokenSource.Cancel();
         }
 
-
-
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            CancellationTokenSource.Cancel();
+            fastCheckButton.Enabled = true;
+        }
     }
 }

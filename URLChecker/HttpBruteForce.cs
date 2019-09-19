@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace URLChecker
@@ -20,14 +21,14 @@ namespace URLChecker
             ServicePointManager.DefaultConnectionLimit = parralelCount;
         }
 
-        public async Task StartBruteForce(Stack<string> urls)
+        public async Task StartBruteForce(Stack<string> urls, CancellationToken cancellationToken)
         {
             _urls = urls;
             List<Task> tasks = new List<Task>();
 
             while (_urls.Count > 0)
             {
-                tasks.Add(LowLevelHttpRequest.BrutForceAsync(_urls.Pop()));
+                tasks.Add(LowLevelHttpRequest.BrutForceAsync(_urls.Pop(), cancellationToken));
                 //Console.WriteLine(_urls.Count());             //непонятно зачем
 
                 if (tasks.Count > _parralelCount)

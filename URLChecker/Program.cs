@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,6 +9,8 @@ namespace URLChecker
 {
     static class Program
     {
+        
+
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -18,5 +21,6 @@ namespace URLChecker
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
+
     }
 }

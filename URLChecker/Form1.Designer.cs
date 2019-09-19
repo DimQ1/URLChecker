@@ -43,13 +43,14 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
+            this.fastCheckButton = new System.Windows.Forms.Button();
             this.ShowSuccesUrls = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.WidthOfRangeBruteforce = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.StartHash = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -178,12 +179,13 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button5);
+            this.groupBox3.Controls.Add(this.button6);
+            this.groupBox3.Controls.Add(this.fastCheckButton);
             this.groupBox3.Controls.Add(this.ShowSuccesUrls);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.textBox5);
+            this.groupBox3.Controls.Add(this.WidthOfRangeBruteforce);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.StartHash);
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Location = new System.Drawing.Point(10, 12);
             this.groupBox3.Name = "groupBox3";
@@ -192,15 +194,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Основная часть (перебор по сети)";
             // 
-            // button5
+            // fastCheckButton
             // 
-            this.button5.Location = new System.Drawing.Point(622, 186);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(127, 23);
-            this.button5.TabIndex = 11;
-            this.button5.Text = "Fast check";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.SmartCheckAllHashes);
+            this.fastCheckButton.Location = new System.Drawing.Point(517, 186);
+            this.fastCheckButton.Name = "fastCheckButton";
+            this.fastCheckButton.Size = new System.Drawing.Size(127, 23);
+            this.fastCheckButton.TabIndex = 11;
+            this.fastCheckButton.Text = "Fast check";
+            this.fastCheckButton.UseVisualStyleBackColor = true;
+            this.fastCheckButton.Click += new System.EventHandler(this.SmartCheckAllHashes);
             // 
             // ShowSuccesUrls
             // 
@@ -218,13 +220,13 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Ширина диапазона хэшей для подбора";
             // 
-            // textBox5
+            // WidthOfRangeBruteforce
             // 
-            this.textBox5.Location = new System.Drawing.Point(16, 56);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(203, 20);
-            this.textBox5.TabIndex = 6;
-            this.textBox5.Text = "7";
+            this.WidthOfRangeBruteforce.Location = new System.Drawing.Point(16, 56);
+            this.WidthOfRangeBruteforce.Name = "WidthOfRangeBruteforce";
+            this.WidthOfRangeBruteforce.Size = new System.Drawing.Size(203, 20);
+            this.WidthOfRangeBruteforce.TabIndex = 6;
+            this.WidthOfRangeBruteforce.Text = "7";
             // 
             // label1
             // 
@@ -236,24 +238,34 @@
             this.label1.Text = "Опорное значение хэша  (для url - https://anonfile.com/36a8Zax7na/filecost_txt   " +
     "-   хэш будет - 36a8Zax7na)";
             // 
-            // textBox1
+            // StartHash
             // 
-            this.textBox1.Location = new System.Drawing.Point(16, 189);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(491, 20);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "hde5Z248nc";
+            this.StartHash.Location = new System.Drawing.Point(16, 189);
+            this.StartHash.Name = "StartHash";
+            this.StartHash.Size = new System.Drawing.Size(386, 20);
+            this.StartHash.TabIndex = 4;
+            this.StartHash.Text = "hde5Z248nc";
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(513, 186);
+            this.button1.Location = new System.Drawing.Point(408, 186);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(103, 23);
             this.button1.TabIndex = 3;
             this.button1.Text = "Start_check_All";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.StartCheckAllHashes);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(650, 186);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(103, 23);
+            this.button6.TabIndex = 12;
+            this.button6.Text = "Stop";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.Button6_Click);
             // 
             // Form1
             // 
@@ -292,12 +304,13 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox WidthOfRangeBruteforce;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox StartHash;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox ShowSuccesUrls;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button fastCheckButton;
+        private System.Windows.Forms.Button button6;
     }
 }
 
