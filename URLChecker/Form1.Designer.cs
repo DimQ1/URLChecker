@@ -194,13 +194,13 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(569, 139);
+            this.button5.Location = new System.Drawing.Point(622, 186);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(176, 23);
+            this.button5.Size = new System.Drawing.Size(127, 23);
             this.button5.TabIndex = 11;
-            this.button5.Text = "New_Check_Object";
+            this.button5.Text = "Fast check";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.Button5_Click);
+            this.button5.Click += new System.EventHandler(this.SmartCheckAllHashes);
             // 
             // ShowSuccesUrls
             // 
@@ -240,20 +240,20 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(16, 189);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(538, 20);
+            this.textBox1.Size = new System.Drawing.Size(491, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.Text = "hde5Z248nc";
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(569, 186);
+            this.button1.Location = new System.Drawing.Point(513, 186);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(176, 23);
+            this.button1.Size = new System.Drawing.Size(103, 23);
             this.button1.TabIndex = 3;
-            this.button1.Text = "Start_check_1";
+            this.button1.Text = "Start_check_All";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click_1);
+            this.button1.Click += new System.EventHandler(this.StartCheckAllHashes);
             // 
             // Form1
             // 

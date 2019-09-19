@@ -29,7 +29,8 @@ namespace URLChecker
 
         }
 
-        
+        #region TODO Need to check. not used yet
+
         private async void Button1_Click(object sender, EventArgs e)
         {
             //await Hash.CheckUrlWithHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
@@ -69,11 +70,6 @@ namespace URLChecker
             }
 
 
-
-
-
-
-
         }
 
 
@@ -106,57 +102,41 @@ namespace URLChecker
         {
             await LocalHash.CheckUrlWithHash(textBox4.Text, arStr);
         }
+        #endregion
 
-        private async void Button1_Click_1(object sender, EventArgs e)
+        private async void StartCheckAllHashes(object sender, EventArgs e)
         {
             await Hash.CheckUrlWithHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
         }
 
 
         //кнопка для альтернативного алгоритма с объектом
-        private async void Button5_Click(object sender, EventArgs e)
+        private async void SmartCheckAllHashes(object sender, EventArgs e)
         {
+            string filePath_settings = Directory.GetCurrentDirectory() + "/settings.txt";
+            GenerateMutationHash mutHash;
+
             if ((textBox1.Text != "") && (textBox1.Text.Length == 10) && (textBox5.Text != ""))
             {
-                GenerateMutationHash mutHash = new GenerateMutationHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
-
-                mutHash.SaveProgress(System.IO.Directory.GetCurrentDirectory() + "/settings.txt");
-                HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
-
-                Stack<string> stack;
-                while ((stack = mutHash.Next1000Hashs()).Count > 0)
-                {
-                    await httpBruteForce.StartBruteForce(stack);
-
-                    if (checkTrueHash) { mutHash.optimizeBruteHash(); checkTrueHash = false; }      //оптимизация
-
-                    mutHash.SaveProgress(System.IO.Directory.GetCurrentDirectory() + "/settings.txt");
-                }
-
-
+                mutHash = new GenerateMutationHash(textBox1.Text, Convert.ToInt32(textBox5.Text));
             }
             else
             {
-                GenerateMutationHash mutHash = new GenerateMutationHash(System.IO.Directory.GetCurrentDirectory() + "/settings.txt");
-
-                mutHash.SaveProgress(System.IO.Directory.GetCurrentDirectory() + "/settings.txt");
-                HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
-
-                Stack<string> stack;
-                while ((stack = mutHash.Next1000Hashs()).Count > 0)
-                {
-                    await httpBruteForce.StartBruteForce(stack);
-
-                    if (checkTrueHash) { mutHash.optimizeBruteHash(); checkTrueHash = false; }      //оптимизация
-
-                    mutHash.SaveProgress(System.IO.Directory.GetCurrentDirectory() + "/settings.txt");
-                }
+               mutHash = new GenerateMutationHash(filePath_settings);
             }
 
-            
+            mutHash.SaveProgress(filePath_settings);
+            HttpBruteForce httpBruteForce = new HttpBruteForce(1000);
 
+            Stack<string> stack;
+            while ((stack = mutHash.Next1000Hashs()).Count > 0)
+            {
+                await httpBruteForce.StartBruteForce(stack);
 
+                if (checkTrueHash) { mutHash.optimizeBruteHash(); checkTrueHash = false; }      //оптимизация
 
+                mutHash.SaveProgress(filePath_settings);
+            }
         }
 
 

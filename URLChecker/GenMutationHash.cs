@@ -210,9 +210,5 @@ namespace URLChecker
 
             return urls;        //возвращаем стэе даже если не набралось 1000
         }
-
-
-
-
     }
 }
