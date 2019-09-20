@@ -13,55 +13,51 @@ namespace URLChecker
     {
         private readonly int _parralelCount;
         private Stack<string> _urls;
+        private string _baseUrl;
+        private const int MaxConnectionsLimit = 10000;
 
-        public HttpBruteForce(int parralelCount = 10)
+        public HttpBruteForce(int parralelCount = 10, string baseUrl = null)
         {
             _parralelCount = parralelCount;
-            
-            ServicePointManager.DefaultConnectionLimit = parralelCount;
+            _baseUrl = baseUrl;
+
+            ServicePointManager.DefaultConnectionLimit = parralelCount > MaxConnectionsLimit ? parralelCount: MaxConnectionsLimit;
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.UseNagleAlgorithm = true;
+            ServicePointManager.ReusePort = true;
+            ServicePointManager.EnableDnsRoundRobin = true;
         }
 
         public async Task StartBruteForce(Stack<string> urls, CancellationToken cancellationToken)
         {
             _urls = urls;
-            List<Task> tasks = new List<Task>();
+            Task[] tasks = new Task[_parralelCount > urls.Count ? urls.Count : _parralelCount];
 
             while (_urls.Count > 0)
             {
-                tasks.Add(LowLevelHttpRequest.BrutForceAsync(_urls.Pop(), cancellationToken));
-                //Console.WriteLine(_urls.Count());             //непонятно зачем
+                AddTasks(tasks, cancellationToken);
 
-                if (tasks.Count > _parralelCount)
-                {
-                    await Task.WhenAny(tasks.ToArray());
-                    tasks = CleanFinishTasks(tasks);
-                }
+                await Task.WhenAny(tasks.ToArray());
+
             }
 
-            if (tasks.Count > 0)
+            if (tasks.Length > 0)
             {
-                tasks = CleanFinishTasks(tasks);
-                /*Task ok_optimization = */await Task.WhenAll(tasks.ToArray());
-
-                //return true;       //!!!!! пробуем возврат значений
+                await Task.WhenAll(tasks.Where(task => !task.IsCompleted && !task.IsFaulted && task.IsCanceled).ToArray());
             }
 
-            //return false;       //!!!!! пробуем возврат значений
         }
 
-        private List<Task> CleanFinishTasks(List<Task> tasks)
+        private void AddTasks(Task[] tasks, CancellationToken cancellationToken)
         {
-            List<Task> cleanTaskList = new List<Task>();
-
-            foreach (var task in tasks)
+            for (var i = 0; i < tasks.Length; i++)
             {
-                if (!task.IsCompleted && !task.IsFaulted)
+                var currentTask = tasks[i];
+                if (currentTask == null || currentTask.IsCompleted || currentTask.IsFaulted || currentTask.IsCanceled)
                 {
-                    cleanTaskList.Add(task);
+                    tasks[i] = LowLevelHttpRequest.BrutForceAsync(_urls.Pop(), cancellationToken);
                 }
             }
-
-            return cleanTaskList;
         }
     }
 }

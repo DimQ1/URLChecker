@@ -19,7 +19,7 @@ namespace URLChecker
 
         public static async Task/*<bool>*/ BrutForceAsync(string webUrl, CancellationToken cancellationToken)
         {
-            await Task.Run(async () =>
+            await Task.Run(async () => // это полезно для выполнения логирования в фоновом процессе.
             {
                 WebRequest webRequest = WebRequest.Create(webUrl);
                 try
@@ -28,18 +28,16 @@ namespace URLChecker
 
                     HttpWebResponse webresponse = (await webRequest.GetResponseAsync().WithCancellation(cancellationToken, webRequest.Abort)) as HttpWebResponse;
 
-                    logger.Info($"ok| {webresponse.StatusCode:D}|{webUrl}");
+                    logger.Info($"ok| {webresponse.StatusCode:D}|{webUrl}"); // это синхронный код и без Task.Run будет блокировать форму
 
-                    SuccessUrl?.Invoke(webUrl);
+                    SuccessUrl?.Invoke(webUrl); // это синхронный код и без Task.Run будет блокировать форму
 
-                        //webresponse.Close();
-                        webresponse.Dispose();
-
+                    webresponse.Dispose();
                 }
                 catch (Exception e)
                 {
                     webRequest = null;
-                    logger.Error(e, $"{e.Message}|{webUrl}");
+                    logger.Error(e, $"{e.Message}|{webUrl}"); // это синхронный код и без Task.Run будет блокировать форму
 
                 }
             });

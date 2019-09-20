@@ -61,7 +61,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GenMutationHash.cs" />
-    <Compile Include="Hash.cs" />
     <Compile Include="HttpBruteForce.cs" />
     <Compile Include="HttpRequest.cs" />
     <Compile Include="LocalBruteForce.cs" />

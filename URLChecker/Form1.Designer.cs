@@ -43,14 +43,13 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.stopCheckHashes = new System.Windows.Forms.Button();
             this.fastCheckButton = new System.Windows.Forms.Button();
             this.ShowSuccesUrls = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.WidthOfRangeBruteforce = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.StartHash = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -179,20 +178,29 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button6);
+            this.groupBox3.Controls.Add(this.stopCheckHashes);
             this.groupBox3.Controls.Add(this.fastCheckButton);
             this.groupBox3.Controls.Add(this.ShowSuccesUrls);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.WidthOfRangeBruteforce);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.StartHash);
-            this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Location = new System.Drawing.Point(10, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(759, 224);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Основная часть (перебор по сети)";
+            // 
+            // stopCheckHashes
+            // 
+            this.stopCheckHashes.Location = new System.Drawing.Point(650, 186);
+            this.stopCheckHashes.Name = "stopCheckHashes";
+            this.stopCheckHashes.Size = new System.Drawing.Size(103, 23);
+            this.stopCheckHashes.TabIndex = 12;
+            this.stopCheckHashes.Text = "Stop";
+            this.stopCheckHashes.UseVisualStyleBackColor = true;
+            this.stopCheckHashes.Click += new System.EventHandler(this.StopCheckHashes_Click);
             // 
             // fastCheckButton
             // 
@@ -242,36 +250,15 @@
             // 
             this.StartHash.Location = new System.Drawing.Point(16, 189);
             this.StartHash.Name = "StartHash";
-            this.StartHash.Size = new System.Drawing.Size(386, 20);
+            this.StartHash.Size = new System.Drawing.Size(495, 20);
             this.StartHash.TabIndex = 4;
             this.StartHash.Text = "hde5Z248nc";
-            // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(408, 186);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Start_check_All";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.StartCheckAllHashes);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(650, 186);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(103, 23);
-            this.button6.TabIndex = 12;
-            this.button6.Text = "Stop";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.Button6_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(776, 251);
+            this.ClientSize = new System.Drawing.Size(783, 249);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -307,10 +294,9 @@
         private System.Windows.Forms.TextBox WidthOfRangeBruteforce;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox StartHash;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox ShowSuccesUrls;
         private System.Windows.Forms.Button fastCheckButton;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button stopCheckHashes;
     }
 }
 

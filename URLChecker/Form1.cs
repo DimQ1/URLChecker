@@ -109,14 +109,6 @@ namespace URLChecker
         }
         #endregion
 
-        private async void StartCheckAllHashes(object sender, EventArgs e)
-        {
-            ((Button)sender).Enabled = false;
-            await Hash.CheckUrlWithHash(StartHash.Text, Convert.ToInt32(WidthOfRangeBruteforce.Text));
-            ((Button)sender).Enabled = true;
-        }
-
-
         //кнопка для альтернативного алгоритма с объектом
         private async void SmartCheckAllHashes(object sender, EventArgs e)
         {
@@ -140,8 +132,13 @@ namespace URLChecker
                     break;
                 }
 
-                if (checkTrueHash) { mutHash.optimizeBruteHash(); checkTrueHash = false; }      //оптимизация
+                if (checkTrueHash)
+                {
+                    mutHash.optimizeBruteHash(); checkTrueHash = false;
+                }   
+
                 CancellationTokenSource = new CancellationTokenSource();
+
                 stack = mutHash.Next1000Hashs();
             }
 
@@ -157,7 +154,7 @@ namespace URLChecker
             CancellationTokenSource.Cancel();
         }
 
-        private void Button6_Click(object sender, EventArgs e)
+        private void StopCheckHashes_Click(object sender, EventArgs e)
         {
             CancellationTokenSource.Cancel();
             fastCheckButton.Enabled = true;

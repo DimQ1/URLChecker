@@ -9,19 +9,19 @@ namespace URLChecker
 {
     class GenerateMutationHash
     {
-        private static string _filePath_settings;
+        private string _filePath_settings;
 
         //static public int i0_start;
-        public static int i1_start;
-        public static int i3_start;
-        public static int i5_start;
-        public static int i7_start;
-        public static int i9_start;
+        public int i1_start;
+        public int i3_start;
+        public int i5_start;
+        public int i7_start;
+        public int i9_start;
 
-        public static string base_Hash;
-        public static int i0_start;
-        public static int i0_delta;
-        public static int i0_end;
+        public string base_Hash;
+        public int i0_start;
+        public int i0_delta;
+        public int i0_end;
 
 
         //блок массивов
@@ -81,15 +81,15 @@ namespace URLChecker
         }
 
 
-        private static void initByInputHash(string base_Hash_, int i0_delta_)
+        private void initByInputHash(string base_Hash_, int i0_delta_)
         {
             base_Hash = base_Hash_;
 
             int i0_start_ = 0;
 
-            // i0_start_ = Array.IndexOf(a_s0, base_Hash_.Substring(0, 1));
+            i0_start_ = Array.IndexOf(a_s0, base_Hash_.Substring(0, 1));
             // я так понимаю ты просто незнал что такая реализация уже есть
-            i0_start_ = CustomIndexOff(base_Hash_, i0_start_);
+            //i0_start_ = CustomIndexOff(base_Hash_, i0_start_);
 
             i0_start = i0_start_ - i0_delta_;
             i0_end = i0_start_ + i0_delta_;
@@ -104,7 +104,7 @@ namespace URLChecker
             SaveProgress();
         }
 
-        private static int CustomIndexOff(string base_Hash_, int i0_start_)
+        private int CustomIndexOff(string base_Hash_, int i0_start_)
         {
             for (int i = 0; i < a_s0.Length; i++)
             {
@@ -119,7 +119,7 @@ namespace URLChecker
         }
 
       
-        private static void initByLoadSettingsFromFile(string filePath_settings)
+        private void initByLoadSettingsFromFile(string filePath_settings)
         {
             using (StreamReader fs = new StreamReader(filePath_settings))
             {
@@ -138,7 +138,7 @@ namespace URLChecker
             }
         }
 
-        private static void SaveProgress()
+        private void SaveProgress()
         {
             using (StreamWriter file = new StreamWriter(_filePath_settings, false))
             {
@@ -158,7 +158,7 @@ namespace URLChecker
 
 
         //корректировка индекса для переходов через пороговые значения (пока нужно только для первого символа)
-        public static int orderIndexCicleArr(int index, string[] arr)
+        public int orderIndexCicleArr(int index, string[] arr)
         {
             if (index >= arr.Length) { return index - arr.Length; }
             if (index < 0) { return arr.Length - Math.Abs(index); }
