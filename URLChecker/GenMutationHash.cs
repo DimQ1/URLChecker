@@ -222,7 +222,7 @@ namespace URLChecker
                                     if (urls.Count < 1000)
                                     {
                                         //if (urls.Count == 0) { urls.Push("https://anonfile.com/" + base_Hash); }                    //это проверочный существующий url
-                                        urls.Push("https://anonfile.com/" + s_mut);
+                                        urls.Push($"https://anonfile.com/api/v2/file/{s_mut}/info");
                                     }
                                     else
                                     {
