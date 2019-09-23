@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -51,14 +52,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.StartHash = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.textBox7 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -188,6 +192,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.textBox7);
             this.groupBox3.Controls.Add(this.stopCheckHashes);
             this.groupBox3.Controls.Add(this.fastCheckButton);
             this.groupBox3.Controls.Add(this.ShowSuccesUrls);
@@ -280,12 +285,50 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Загрузка файла на сервис";
             // 
-            // textBox1
+            // button6
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 188);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(492, 20);
-            this.textBox1.TabIndex = 17;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.Location = new System.Drawing.Point(513, 53);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(133, 23);
+            this.button6.TabIndex = 23;
+            this.button6.Text = "Start";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.Button6_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(94, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 13);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "Periodic";
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(15, 117);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(73, 20);
+            this.textBox6.TabIndex = 21;
+            // 
+            // button5
+            // 
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Location = new System.Drawing.Point(513, 152);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(133, 23);
+            this.button5.TabIndex = 20;
+            this.button5.Text = "SelectDirToMonitoring";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(15, 152);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(492, 20);
+            this.textBox5.TabIndex = 19;
             // 
             // button1
             // 
@@ -298,52 +341,30 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click_1);
             // 
-            // textBox5
+            // textBox1
             // 
-            this.textBox5.Location = new System.Drawing.Point(15, 152);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(492, 20);
-            this.textBox5.TabIndex = 19;
-            // 
-            // button5
-            // 
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(513, 152);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(133, 23);
-            this.button5.TabIndex = 20;
-            this.button5.Text = "SelectDirToMonitoring";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(15, 117);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(73, 20);
-            this.textBox6.TabIndex = 21;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(94, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 13);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "Periodic";
-            // 
-            // button6
-            // 
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(513, 53);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(133, 23);
-            this.button6.TabIndex = 23;
-            this.button6.Text = "Start Monitoring";
-            this.button6.UseVisualStyleBackColor = true;
+            this.textBox1.Location = new System.Drawing.Point(15, 188);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(492, 20);
+            this.textBox1.TabIndex = 17;
             // 
             // openFileDialog3
             // 
             this.openFileDialog3.FileName = "openFileDialog3";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 10000;
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // textBox7
+            // 
+            this.textBox7.Enabled = false;
+            this.textBox7.Location = new System.Drawing.Point(316, 97);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(261, 20);
+            this.textBox7.TabIndex = 13;
+            this.textBox7.Text = "0";
             // 
             // Form1
             // 
@@ -400,6 +421,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.OpenFileDialog openFileDialog3;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TextBox textBox7;
     }
 }
 

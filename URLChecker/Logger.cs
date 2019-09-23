@@ -5,7 +5,7 @@ namespace URLChecker
 {
     public class Logger
     {
-        public static void Configure(string ErrorFilename, string OkFilename)
+        public static void Configure(string ErrorFilename, string OkFilename, string UploadFilename)
         {
             var config = new NLog.Config.LoggingConfiguration();
 
@@ -21,12 +21,20 @@ namespace URLChecker
                 FileName = ErrorFilename,
                 Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}"
             };
+
+            var logUpload = new FileTarget("logfile")
+            {
+                FileName = UploadFilename,
+                Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}"
+            };
+
             //var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
 
             // Rules for mapping loggers to targets            
             // config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
             config.AddRule(LogLevel.Info, LogLevel.Info, logfile);
             config.AddRule(LogLevel.Error, LogLevel.Fatal, logError);
+            config.AddRule(LogLevel.Info, LogLevel.Info, logUpload);
 
             // Apply config           
             LogManager.Configuration = config;

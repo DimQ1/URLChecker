@@ -12,12 +12,12 @@ namespace URLChecker
     public class LowLevelHttpRequest
     {
         public delegate void HttpStateHandler(string message);
-        // Событие, возникающее при выводе денег
+        // Событие, возникающее при обнаружении совпадения
         public static event HttpStateHandler SuccessUrl;
 
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static async Task/*<bool>*/ BrutForceAsync(string webUrl, CancellationToken cancellationToken)
+        public static async Task BrutForceAsync(string webUrl, CancellationToken cancellationToken)
         {
             await Task.Run(async () => // это полезно для выполнения логирования в фоновом процессе.
             {

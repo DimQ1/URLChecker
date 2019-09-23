@@ -11,7 +11,10 @@ namespace URLChecker
     {
         private string _filePath_settings;
 
+        public HashSettings hashSettings = new HashSettings();
+
         //static public int i0_start;
+        /*
         public int i1_start;
         public int i3_start;
         public int i5_start;
@@ -22,7 +25,7 @@ namespace URLChecker
         public int i0_start;
         public int i0_delta;
         public int i0_end;
-
+        */
 
         //блок массивов
 
@@ -68,19 +71,20 @@ namespace URLChecker
         {
             _filePath_settings = filePath_settings;
 
-
             if (startHash?.Length == 10 && widthOfRangeBruteforce != null)
             {
-                initByInputHash(startHash, widthOfRangeBruteforce.GetValueOrDefault(0));
+                hashSettings.initByInputHash(startHash, widthOfRangeBruteforce.GetValueOrDefault(0), Array.IndexOf(a_s0, startHash.Substring(0, 1)));
+                hashSettings.SaveProgress(filePath_settings);
             }
             else
             {
-                initByLoadSettingsFromFile(filePath_settings);
+                hashSettings.initByLoadSettingsFromFile(filePath_settings);
             }
-            
         }
                
 
+
+        /*
         private void initByInputHash(string base_Hash_, int i0_delta_)
         {
             base_Hash = base_Hash_;
@@ -88,9 +92,7 @@ namespace URLChecker
             int i0_start_ = 0;
 
             i0_start_ = Array.IndexOf(a_s0, base_Hash_.Substring(0, 1));
-            // я так понимаю ты просто незнал что такая реализация уже есть
-            //i0_start_ = CustomIndexOff(base_Hash_, i0_start_);
-
+            
             i0_start = i0_start_ - i0_delta_;
             i0_end = i0_start_ + i0_delta_;
             i0_delta = i0_delta_;
@@ -103,22 +105,9 @@ namespace URLChecker
 
             SaveProgress();
         }
-
-        //ну да теперь метод не нужен
-        //private int CustomIndexOff(string base_Hash_, int i0_start_)
-        //{
-        //    for (int i = 0; i < a_s0.Length; i++)
-        //    {
-        //        if (a_s0[i] == base_Hash_.Substring(0, 1))
-        //        {
-        //            i0_start_ = i;
-        //            continue; // тут возможно break ??????
-        //        }
-        //    }
-        //    return i0_start_;
-        //}
-
-      
+        */
+        
+        /*
         private void initByLoadSettingsFromFile(string filePath_settings)
         {
             using (StreamReader fs = new StreamReader(filePath_settings))
@@ -137,7 +126,9 @@ namespace URLChecker
 
             }
         }
+        */
 
+        /*
         private void SaveProgress()
         {
             using (StreamWriter file = new StreamWriter(_filePath_settings, false))
@@ -155,7 +146,7 @@ namespace URLChecker
                 file.WriteLine(i9_start.ToString());
             }
         }
-
+        */
 
         //корректировка индекса для переходов через пороговые значения (пока нужно только для первого символа)
         public int orderIndexCicleArr(int index, string[] arr)
@@ -169,13 +160,13 @@ namespace URLChecker
         //оптимизация выполнения при нахождении хэша
         public void optimizeBruteHash()
         {
-            i1_start = 0;
-            i3_start = 0;
-            i5_start = 0;
-            i7_start = 0;
-            i9_start = 0;
+            hashSettings.i1_start = 0;
+            hashSettings.i3_start = 0;
+            hashSettings.i5_start = 0;
+            hashSettings.i7_start = 0;
+            hashSettings.i9_start = 0;
 
-            i0_start++;
+            hashSettings.i0_start++;
         }
 
 
@@ -184,14 +175,14 @@ namespace URLChecker
             Stack<string> urls = new Stack<string>();
 
             // здесь постоянные символы
-            string a_s2 = base_Hash.Substring(2, 1);          //не постоянное, но пока СЧИТАЕМ постоянным, потом для красоты 1 вниз и 1 вверх
-            string a_s4 = base_Hash.Substring(4, 1);
-            string a_s6 = base_Hash.Substring(6, 1);
-            string a_s8 = base_Hash.Substring(8, 1);
+            string a_s2 = hashSettings.base_Hash.Substring(2, 1);          //не постоянное, но пока СЧИТАЕМ постоянным, потом для красоты 1 вниз и 1 вверх
+            string a_s4 = hashSettings.base_Hash.Substring(4, 1);
+            string a_s6 = hashSettings.base_Hash.Substring(6, 1);
+            string a_s8 = hashSettings.base_Hash.Substring(8, 1);
 
             string s_mut = "";
-            int i0 = i0_start, i1 = i1_start, i3 = i3_start, i5 = i5_start, i7 = i7_start, i9 = i9_start;                     //инициализация переменных цикла
-            while (i0 < i0_end)                 //здесь перебирать не все, n вверх и n вниз
+            int i0 = hashSettings.i0_start, i1 = hashSettings.i1_start, i3 = hashSettings.i3_start, i5 = hashSettings.i5_start, i7 = hashSettings.i7_start, i9 = hashSettings.i9_start;       //инициализация переменных цикла
+            while (i0 < hashSettings.i0_end)                 //здесь перебирать не все, n вверх и n вниз
             {
                 while (i1 < a_s1.Length)
                 {
@@ -205,15 +196,15 @@ namespace URLChecker
                                 {
 
                                     string a_si0 = "";
-                                    if (i0 < i0_end - i0_delta)
+                                    if (i0 < hashSettings.i0_end - hashSettings.i0_delta)
                                     {
-                                        a_si0 = a_s0[orderIndexCicleArr((i0 + i0_delta + 1), a_s0)];
+                                        a_si0 = a_s0[orderIndexCicleArr((i0 + hashSettings.i0_delta + 1), a_s0)];
                                     }
-                                    if (i0 > i0_end - i0_delta)
+                                    if (i0 > hashSettings.i0_end - hashSettings.i0_delta)
                                     {
-                                        a_si0 = a_s0[orderIndexCicleArr(((i0_end - i0_delta) - (i0 - (i0_end - i0_delta))), a_s0)];
+                                        a_si0 = a_s0[orderIndexCicleArr(((hashSettings.i0_end - hashSettings.i0_delta) - (i0 - (hashSettings.i0_end - hashSettings.i0_delta))), a_s0)];
                                     }
-                                    if (i0 == i0_end - i0_delta) { break; }
+                                    if (i0 == hashSettings.i0_end - hashSettings.i0_delta) { break; }
 
 
                                     s_mut = a_si0 + a_s1[i1] + a_s2/*константа*/ + a_s3[i3] + a_s4/*константа*/ + a_s5[i5] + a_s6/*константа*/ + a_s7[i7] + a_s8/*константа*/ + a_s9[i9];
@@ -222,12 +213,12 @@ namespace URLChecker
                                     if (urls.Count < 1000)
                                     {
                                         //if (urls.Count == 0) { urls.Push("https://anonfile.com/" + base_Hash); }                    //это проверочный существующий url
-                                        urls.Push("https://anonfile.com/" + s_mut);
+                                        urls.Push("https://anonfile.com/" + s_mut);                    //$"https://anonfile.com/api/v2/file{s_mut}/info"
                                     }
                                     else
                                     {
-                                        i0_start = i0; i1_start = i1; i3_start = i3; i5_start = i5; i7_start = i7; i9_start = i9; //сохранение переменных цикла
-                                        SaveProgress();
+                                        hashSettings.i0_start = i0; hashSettings.i1_start = i1; hashSettings.i3_start = i3; hashSettings.i5_start = i5; hashSettings.i7_start = i7; hashSettings.i9_start = i9; //сохранение переменных цикла
+                                        hashSettings.SaveProgress(_filePath_settings);
                                         return urls;
                                     }
                                     i9++;
@@ -248,8 +239,8 @@ namespace URLChecker
                 i0++;
             }
             //i0_start = 0;             //думаем что не нужно, уже завершение
-            SaveProgress();
-            return urls;        //возвращаем стэе даже если не набралось 1000
+            hashSettings.SaveProgress(_filePath_settings);
+            return urls;        //возвращаем стэк даже если не набралось 1000
         }
     }
 }

@@ -24,8 +24,8 @@ namespace URLChecker
         {
             InitializeComponent();
             //для NLog
-            Logger.Configure("error.txt", "ok.txt");                        //для сетевого алгоритма
-                                                                            //Logger.Configure("error_local.txt", "ok_local.txt");            //для локального алгоритма
+            Logger.Configure("error.txt", "ok.txt", "uploadFile.txt");                        //для сетевого алгоритма
+            //Logger.Configure("error_local.txt", "ok_local.txt");            //для локального алгоритма
 
             //HashChecker.Status += HashChecker_Status;
 
@@ -126,6 +126,7 @@ namespace URLChecker
             while (stack.Count > 0)
             {
                 await httpBruteForce.StartBruteForce(stack, CancellationTokenSource.Token);
+                textBox7.Text = Convert.ToString(Convert.ToInt32(textBox7.Text) + 1000);
 
                 if (((Button)sender).Enabled)
                 {
@@ -150,6 +151,8 @@ namespace URLChecker
         private void Show_Message(string message)
         {
             var text = $"{message}";
+            ShowSuccesUrls.Text = ShowSuccesUrls.Text + text + " - ";
+
             checkTrueHash = true;
             CancellationTokenSource.Cancel();
         }
@@ -160,23 +163,7 @@ namespace URLChecker
             fastCheckButton.Enabled = true;
         }
 
-        private async void Button1_Click_1(object sender, EventArgs e)
-        {
-            openFileDialog3.FilterIndex = 1;
-            openFileDialog3.RestoreDirectory = true;
-
-            if (openFileDialog3.ShowDialog() == DialogResult.OK)
-            {
-                textBox1.Clear();
-                textBox1.Text = openFileDialog3.FileName;
-
-                CancellationToken ct;
-                string s = await SendRequestAnonf(textBox1.Text, ct);
-
-            }
-        }
-
-
+        
         //загрузка файла на сервер
         public async Task<string> SendRequestAnonf(string filePath, CancellationToken ct)
         {
@@ -201,9 +188,81 @@ namespace URLChecker
         }
 
 
+        //стартуем отправку файла на сервер
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            if (button6.Text == "Start")
+            {
+                if (((textBox6.Text != "") && (Convert.ToInt32(textBox6.Text) != 0)))
+                {
+                    textBox1.Enabled = false;
+                    textBox5.Enabled = false;
+                    textBox6.Enabled = false;
+
+                    timer1.Interval = Convert.ToInt32(textBox6.Text) * 1000;
+                    timer1.Start(); //.Enabled = true;
+
+                    button6.Text = "Stop";
+                }
+            }
+            else
+            {
+                timer1.Stop();
+                button6.Text = "Start";
+
+                textBox1.Enabled = true;
+                textBox5.Enabled = true;
+                textBox6.Enabled = true;
+            }
 
 
 
+            
+        }
+
+        private static NLog.Logger loggerUpload = NLog.LogManager.GetCurrentClassLogger();
+        //периодический опрос папки на наличие новых файлов
+        private async void Timer1_Tick(object sender, EventArgs e)
+        {
+            if (File.Exists(textBox1.Text) && (Directory.Exists(textBox5.Text)))
+            {
+                string[] filesInDir = Directory.GetFiles(textBox5.Text, "*.txt", SearchOption.TopDirectoryOnly);
+
+                foreach (string pathF in filesInDir)
+                {
+                    //string fileName = Path.GetFileName(pathF);
+
+                    string s = await SendRequestAnonf(textBox1.Text, new CancellationToken());
+                    loggerUpload.Info($"Uploading - | {Path.GetFileName(pathF)}| - {s}");
+                    File.Delete(pathF);
+                }
+            }
+        }
+
+
+        //выбрали директорию для мониторинга
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                textBox5.Clear();
+                textBox5.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+
+        //выбрали файл для загрузки на сайт
+        private void Button1_Click_1(object sender, EventArgs e)
+        {
+            openFileDialog3.FilterIndex = 1;
+            openFileDialog3.RestoreDirectory = true;
+
+            if (openFileDialog3.ShowDialog() == DialogResult.OK)
+            {
+                textBox1.Clear();
+                textBox1.Text = openFileDialog3.FileName;
+            }
+        }
+               
 
     }
 }
