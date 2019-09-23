@@ -79,7 +79,7 @@ namespace URLChecker
             }
             
         }
-
+               
 
         private void initByInputHash(string base_Hash_, int i0_delta_)
         {
@@ -104,19 +104,19 @@ namespace URLChecker
             SaveProgress();
         }
 
-        private int CustomIndexOff(string base_Hash_, int i0_start_)
-        {
-            for (int i = 0; i < a_s0.Length; i++)
-            {
-                if (a_s0[i] == base_Hash_.Substring(0, 1))
-                {
-                    i0_start_ = i;
-                    continue; // тут возможно break ??????
-                }
-            }
-
-            return i0_start_;
-        }
+        //ну да теперь метод не нужен
+        //private int CustomIndexOff(string base_Hash_, int i0_start_)
+        //{
+        //    for (int i = 0; i < a_s0.Length; i++)
+        //    {
+        //        if (a_s0[i] == base_Hash_.Substring(0, 1))
+        //        {
+        //            i0_start_ = i;
+        //            continue; // тут возможно break ??????
+        //        }
+        //    }
+        //    return i0_start_;
+        //}
 
       
         private void initByLoadSettingsFromFile(string filePath_settings)

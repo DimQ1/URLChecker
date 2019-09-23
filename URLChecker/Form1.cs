@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
-
+using System.Net.Http;
 
 namespace URLChecker
 {
@@ -159,5 +159,51 @@ namespace URLChecker
             CancellationTokenSource.Cancel();
             fastCheckButton.Enabled = true;
         }
+
+        private async void Button1_Click_1(object sender, EventArgs e)
+        {
+            openFileDialog3.FilterIndex = 1;
+            openFileDialog3.RestoreDirectory = true;
+
+            if (openFileDialog3.ShowDialog() == DialogResult.OK)
+            {
+                textBox1.Clear();
+                textBox1.Text = openFileDialog3.FileName;
+
+                CancellationToken ct;
+                string s = await SendRequestAnonf(textBox1.Text, ct);
+
+            }
+        }
+
+
+        //загрузка файла на сервер
+        public async Task<string> SendRequestAnonf(string filePath, CancellationToken ct)
+        {
+            if (File.Exists(filePath))
+            {
+                byte[] file_bytes = File.ReadAllBytes(filePath);
+                HttpClient httpClient = new HttpClient();
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                form.Add(new StringContent("name"), "file");
+                form.Add(new StringContent("filename"), filePath);
+                form.Add(new ByteArrayContent(file_bytes, 0, file_bytes.Length), "file", Path.GetFileName(filePath));
+                HttpResponseMessage response = await httpClient.PostAsync("https://anonfile.com/api/upload", form);
+                response.EnsureSuccessStatusCode();
+                httpClient.Dispose();
+                var sd = response.Content.ReadAsStringAsync().Result;
+
+                //распарсить json
+
+                return sd.Substring(sd.IndexOf(@"https://anonfile.com/"), 31); ;
+            }
+            else { return ""; }
+        }
+
+
+
+
+
+
     }
 }
